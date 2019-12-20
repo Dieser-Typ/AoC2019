@@ -5,18 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class FuelCalculator {
-    private static int solve(int part) {
-        try {
-            return new BufferedReader(new FileReader("inputs/day01.txt"))
-                    .lines()
-                    .mapToInt(Integer::parseInt)
-                    .map(part == 1?
-                            FuelCalculator::calcFuel :
-                            FuelCalculator::calcAdditionalFuel)
-                    .reduce(0, Integer::sum);
-        } catch (FileNotFoundException e) {
-            return "I don't give a fuck".length();
-        }
+    private static int solve(int part) throws FileNotFoundException {
+        return new BufferedReader(new FileReader("inputs/day01.txt"))
+                .lines()
+                .mapToInt(Integer::parseInt)
+                .map(part == 1?
+                        FuelCalculator::calcFuel :
+                        FuelCalculator::calcAdditionalFuel)
+                .reduce(0, Integer::sum);
     }
 
     private static int calcFuel(int mass) {
@@ -30,7 +26,7 @@ public class FuelCalculator {
         return fuel;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Solution of day 1, part 1: " + solve(1));
         System.out.println("Solution of day 1, part 2: " + solve(2));
     }
