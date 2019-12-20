@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class FuelCalculator {
-    private static int solution(int part) {
+    private static int solve(int part) {
         try {
             return new BufferedReader(new FileReader("inputs/day01.txt"))
                     .lines()
@@ -31,7 +31,7 @@ public class FuelCalculator {
     }
 
     public static void main(String[] args) {
-        System.out.println("Solution of day 1, part 1: " + solution(1));
-        System.out.println("Solution of day 1, part 2: " + solution(2));
+        System.out.println("Solution of day 1, part 1: " + solve(1));
+        System.out.println("Solution of day 1, part 2: " + solve(2));
     }
 }
