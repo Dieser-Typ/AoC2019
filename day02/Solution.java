@@ -2,7 +2,7 @@ package day02;
 
 public class Solution {
     private static int replaceAndRun(int noun, int verb) {
-        IntComputer c = new IntComputer("inputs/day02.txt");
+        IntCodeComputer c = new IntCodeComputer("inputs/day02.txt");
         c.replaceValue(1, noun);
         c.replaceValue(2, verb);
         c.runProgram();

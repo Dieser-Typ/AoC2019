@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 
-class IntComputer {
+class IntCodeComputer {
     private int[] prog;
 
-    IntComputer(String programPath) {
+    IntCodeComputer(String programPath) {
         prog = parseProg(programPath);
     }
 
