@@ -64,6 +64,6 @@ public class Solution implements InputProducer, OutputListener{
 
     public static void main(String[] args) {
         System.out.println("Solution of day 7, part 1: " + new Solution().solve(1));
-        System.out.println("Solution of day 7, part 1: " + new Solution().solve(2));
+        System.out.println("Solution of day 7, part 2: " + new Solution().solve(2));
     }
 }
