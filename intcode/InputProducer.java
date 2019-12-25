@@ -2,5 +2,5 @@ package intcode;
 
 @FunctionalInterface
 public interface InputProducer {
-    int produceInput();
+    int produceInput(IntCodeComputer computer);
 }

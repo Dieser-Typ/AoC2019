@@ -17,7 +17,7 @@ public class Solution implements OutputListener{
     }
 
     private int solve(int part) {
-        new IntCodeComputer("inputs/day05.txt", () -> part == 1? 1 : 5, this).runProgram();
+        new IntCodeComputer("inputs/day05.txt", comp -> part == 1? 1 : 5, this).runProgram();
         return lastOutput;
     }
 

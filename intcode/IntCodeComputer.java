@@ -10,12 +10,14 @@ public class IntCodeComputer {
     private int instructionPointer;
     private InputProducer inputProducer;
     private OutputListener outputListener;
+    private boolean isWaiting;
 
     public IntCodeComputer(String programPath) {
         prog = parseProg(programPath);
         instructionPointer = 0;
         inputProducer = null;
         outputListener = null;
+        isWaiting = false;
     }
 
     public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) {
@@ -39,7 +41,8 @@ public class IntCodeComputer {
     }
 
     public void runProgram() {
-        while (prog[instructionPointer] != 99) {
+        isWaiting = false;
+        while (prog[instructionPointer] != 99 && !isWaiting) {
             int instLength = processOpcode();
             instructionPointer += instLength;
         }
@@ -55,7 +58,7 @@ public class IntCodeComputer {
                 multiply();
                 return 4;
             case 3:
-                input(); return 2;
+                input(); return isWaiting? 0: 2;
             case 4:
                 output(); return 2;
             case 5:
@@ -92,9 +95,11 @@ public class IntCodeComputer {
 
     private void input() {
         int input;
-        if (inputProducer != null)
-            input = inputProducer.produceInput();
-        else {
+        if (inputProducer != null) {
+            input = inputProducer.produceInput(this);
+            if (isWaiting)
+                return;
+        } else {
             System.out.println("Waiting for Input...");
             input = new Scanner(System.in).nextInt();
         }
@@ -130,5 +135,13 @@ public class IntCodeComputer {
 
     public int getValue(int address) {
         return prog[address];
+    }
+
+    public void waitForInput() {
+        isWaiting = true;
+    }
+
+    public boolean isWaiting() {
+        return isWaiting;
     }
 }
