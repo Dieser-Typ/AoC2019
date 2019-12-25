@@ -7,7 +7,7 @@ import intcode.*;
 
 public class Solution implements InputProducer, OutputListener{
 
-    private int lastOutput;
+    private long lastOutput;
     private int currentAmplifier;
     private Amplifier[] amplifiers;
 
@@ -18,7 +18,7 @@ public class Solution implements InputProducer, OutputListener{
     }
 
     @Override
-    public int produceInput(IntCodeComputer comp) {
+    public long produceInput(IntCodeComputer comp) {
         if (!(comp instanceof Amplifier))
             return 0;
         Amplifier amp = (Amplifier) comp;
@@ -33,7 +33,7 @@ public class Solution implements InputProducer, OutputListener{
     }
 
     @Override
-    public void outputProduced(int output) {
+    public void outputProduced(long output) {
         lastOutput = output;
     }
 
@@ -49,15 +49,15 @@ public class Solution implements InputProducer, OutputListener{
         }
     }
 
-    private int solve(int part) {
-        int largestOutput = 0;
+    private long solve(int part) {
+        long largestOutput = 0;
         for (int i = 0; i < 120; i++) {
             this.setupAmlifiers(i, part == 2);
             do {
                 for (IntCodeComputer amplifier : amplifiers)
                     amplifier.runProgram();
             } while (amplifiers[4].isWaiting());
-            largestOutput = Integer.max(largestOutput, lastOutput);
+            largestOutput = Long.max(largestOutput, lastOutput);
         }
         return largestOutput;
     }

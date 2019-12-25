@@ -1,8 +1,8 @@
-package day05;
+package day09;
 
 import intcode.*;
 
-public class Solution implements OutputListener{
+public class Solution implements OutputListener {
     private long lastOutput;
 
     private Solution() {
@@ -17,12 +17,12 @@ public class Solution implements OutputListener{
     }
 
     private long solve(int part) {
-        new IntCodeComputer("inputs/day05.txt", comp -> part == 1? 1 : 5, this).runProgram();
+        new IntCodeComputer("inputs/day09.txt", comp -> part, this).runProgram();
         return lastOutput;
     }
 
     public static void main(String[] args) {
         for (int i = 1; i < 3; i++)
-            System.out.println("Solution of day 5, part " + i + ": " + new Solution().solve(i));
+            System.out.println("Solution of day 9, part " + i + ": " + new Solution().solve(i));
     }
 }

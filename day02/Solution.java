@@ -3,18 +3,18 @@ package day02;
 import intcode.IntCodeComputer;
 
 public class Solution {
-    private static int replaceAndRun(int noun, int verb) {
+    private static long replaceAndRun(int noun, int verb) {
         IntCodeComputer c = new IntCodeComputer("inputs/day02.txt");
         c.replaceValue(1, noun);
         c.replaceValue(2, verb);
         c.runProgram();
-        return c.getValue(0);
+        return c.get(0);
     }
 
     private static int solvePart2() {
         for (int noun = 0; noun < 100; noun++) {
             for (int verb = 0; verb < 100; verb++) {
-                int output = replaceAndRun(noun, verb);
+                long output = replaceAndRun(noun, verb);
                 if (output == 19690720)
                     return 100 * noun + verb;
             }
