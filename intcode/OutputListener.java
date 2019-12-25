@@ -1,4 +1,4 @@
-package day05;
+package intcode;
 
 public interface OutputListener {
     void outputProduced(int output);

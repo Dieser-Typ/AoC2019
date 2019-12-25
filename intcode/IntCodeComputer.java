@@ -1,24 +1,24 @@
-package day05;
+package intcode;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.Scanner;
 
-class IntCodeComputer {
+public class IntCodeComputer {
     private int[] prog;
     private int instructionPointer;
     private InputProducer inputProducer;
     private OutputListener outputListener;
 
-    IntCodeComputer(String programPath) {
+    public IntCodeComputer(String programPath) {
         prog = parseProg(programPath);
         instructionPointer = 0;
         inputProducer = null;
         outputListener = null;
     }
 
-    IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) {
+    public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) {
         this(programPath);
         inputProducer = inProd;
         outputListener = outList;
@@ -38,7 +38,7 @@ class IntCodeComputer {
         }
     }
 
-    void runProgram() {
+    public void runProgram() {
         while (prog[instructionPointer] != 99) {
             int instLength = processOpcode();
             instructionPointer += instLength;
@@ -124,4 +124,11 @@ class IntCodeComputer {
         prog[param(3, true)] = param(1) == param(2)? 1: 0;
     }
 
+    public void replaceValue(int addr, int value) {
+        prog[addr] = value;
+    }
+
+    public int getValue(int address) {
+        return prog[address];
+    }
 }

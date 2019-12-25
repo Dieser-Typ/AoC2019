@@ -1,5 +1,7 @@
 package day02;
 
+import intcode.IntCodeComputer;
+
 public class Solution {
     private static int replaceAndRun(int noun, int verb) {
         IntCodeComputer c = new IntCodeComputer("inputs/day02.txt");

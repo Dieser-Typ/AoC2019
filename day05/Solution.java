@@ -1,5 +1,7 @@
 package day05;
 
+import intcode.*;
+
 public class Solution implements OutputListener{
     private int lastOutput;
 

@@ -1,4 +1,4 @@
-package day05;
+package intcode;
 
 @FunctionalInterface
 public interface InputProducer {
