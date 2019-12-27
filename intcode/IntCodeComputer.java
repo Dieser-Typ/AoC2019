@@ -2,7 +2,7 @@ package intcode;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +17,7 @@ public class IntCodeComputer {
     private OutputListener outputListener;
     private boolean isWaiting;
 
-    public IntCodeComputer(String programPath) {
+    public IntCodeComputer(String programPath) throws IOException {
         parseProg(programPath);
         instructionPointer = 0;
         relativeBase = 0;
@@ -26,25 +26,19 @@ public class IntCodeComputer {
         isWaiting = false;
     }
 
-    public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) {
+    public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) throws IOException {
         this(programPath);
         inputProducer = inProd;
         outputListener = outList;
     }
 
-    private void parseProg(String programPath) {
-        try {
-            prog = Arrays.stream(
-                    new BufferedReader(new FileReader(programPath))
-                            .readLine()
-                            .split(","))
-                    .map(Long::parseLong)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            // if parsing fails, return a prog which immediately halts
-            prog = new ArrayList<>();
-            prog.add(99L);
-        }
+    private void parseProg(String programPath) throws IOException {
+        prog = Arrays.stream(
+                new BufferedReader(new FileReader(programPath))
+                        .readLine()
+                        .split(","))
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
     }
 
     public void runProgram() {
@@ -56,14 +50,12 @@ public class IntCodeComputer {
     }
 
     private int processOpcode() {
-        long opcode = get(instructionPointer);
-        switch ((int) opcode % 100) {
+        int opcode = (int) get(instructionPointer);
+        switch (opcode % 100) {
             case 1:
-                add();
-                return 4;
+                add(); return 4;
             case 2:
-                multiply();
-                return 4;
+                multiply(); return 4;
             case 3:
                 input(); return isWaiting? 0: 2;
             case 4:
@@ -79,13 +71,12 @@ public class IntCodeComputer {
             case 9:
                 adjustRelativeBase(); return 2;
             default:
-                System.err.println(opcode);
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("Unknown opcode: " + opcode);
         }
     }
 
     private long param (int paramOffset, boolean isWriteParam) {
-        long mode = get(instructionPointer) / 10 / (int) Math.pow(10, paramOffset) % 10;
+        int mode = (int) (get(instructionPointer) / 10 / Math.pow(10, paramOffset) % 10);
         long param = get(instructionPointer + paramOffset);
         if (mode == 1)
             return param;
@@ -113,7 +104,7 @@ public class IntCodeComputer {
                 return;
         } else {
             System.out.println("Waiting for Input...");
-            input = new Scanner(System.in).nextInt();
+            input = new Scanner(System.in).nextLong();
         }
         set((int) param(1, true), input);
     }
@@ -137,20 +128,23 @@ public class IntCodeComputer {
         set((int) param(3, true), param(1) < param(2)? 1: 0L);
     }
 
-    private void adjustRelativeBase() {
-        relativeBase += param(1);
-    }
-
     private void equals() {
         set((int) param(3, true), param(1) == param(2)? 1: 0L);
     }
 
-    public void replaceValue(int addr, long value) {
-        set(addr, value);
+    private void adjustRelativeBase() {
+        relativeBase += param(1);
     }
 
     public long get(int address) {
         return address >= prog.size()? 0 : prog.get(address);
+    }
+
+    public void set(int address, long value) {
+        while (address >= prog.size()) {
+            prog.add(0L);
+        }
+        prog.set(address, value);
     }
 
     public void waitForInput() {
@@ -159,12 +153,5 @@ public class IntCodeComputer {
 
     public boolean isWaiting() {
         return isWaiting;
-    }
-
-    private void set(int address, long value) {
-        while (address >= prog.size()) {
-            prog.add(0L);
-        }
-        prog.set(address, value);
     }
 }

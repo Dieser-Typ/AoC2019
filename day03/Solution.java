@@ -1,5 +1,6 @@
 package day03;
 
+import util.Point;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class Solution {
         });
         return handlePath(reader, Integer.MAX_VALUE, (p, minDist) -> {
             if (points.containsKey(p)) {
-                int dist = part == 1? p.getManhattanDistance() : p.getSteps() + points.get(p);
+                int dist = part == 1? p.getManhattanDistance(new Point(0, 0)) : p.getSteps() + points.get(p);
                 return Integer.min(dist, minDist);
             }
             return minDist;

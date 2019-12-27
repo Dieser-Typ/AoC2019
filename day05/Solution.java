@@ -1,6 +1,7 @@
 package day05;
 
 import intcode.*;
+import java.io.IOException;
 
 public class Solution implements OutputListener{
     private long lastOutput;
@@ -16,12 +17,12 @@ public class Solution implements OutputListener{
         lastOutput = output;
     }
 
-    private long solve(int part) {
+    private long solve(int part) throws IOException {
         new IntCodeComputer("inputs/day05.txt", comp -> part == 1? 1 : 5, this).runProgram();
         return lastOutput;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         for (int i = 1; i < 3; i++)
             System.out.println("Solution of day 5, part " + i + ": " + new Solution().solve(i));
     }
