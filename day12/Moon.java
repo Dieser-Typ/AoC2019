@@ -138,7 +138,7 @@ public class Moon {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(solvePart1());
-        System.out.println(solvePart2());
+        System.out.println("Solution of day 12, part 1: " + solvePart1());
+        System.out.println("Solution of day 12, part 2: " + solvePart2());
     }
 }
