@@ -1,6 +1,5 @@
 package day07;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -38,7 +37,7 @@ public class Solution implements InputProducer, OutputListener{
         lastOutput = output;
     }
 
-    private void setupAmlifiers(int seqNr, boolean inFeedbackLoopMode) throws IOException {
+    private void setupAmlifiers(int seqNr, boolean inFeedbackLoopMode) {
         lastOutput = 0;
         List<Integer> settings = IntStream.range(0, 5).boxed().collect(Collectors.toList());
         int x = 120;
@@ -50,7 +49,7 @@ public class Solution implements InputProducer, OutputListener{
         }
     }
 
-    private long solve(int part) throws IOException {
+    private long solve(int part) {
         long largestOutput = 0;
         for (int i = 0; i < 120; i++) {
             this.setupAmlifiers(i, part == 2);
@@ -63,7 +62,7 @@ public class Solution implements InputProducer, OutputListener{
         return largestOutput;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Solution of day 7, part 1: " + new Solution().solve(1));
         System.out.println("Solution of day 7, part 2: " + new Solution().solve(2));
     }

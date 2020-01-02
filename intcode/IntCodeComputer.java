@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 
 public class IntCodeComputer {
 
-    private List<Long> prog;
+    private List<Long> program;
     private int instructionPointer;
     private int relativeBase;
     private InputProducer inputProducer;
     private OutputListener outputListener;
     private boolean isWaiting;
 
-    public IntCodeComputer(String programPath) throws IOException {
-        parseProg(programPath);
+    public IntCodeComputer(String programPath) {
+        parseProgram(programPath);
         instructionPointer = 0;
         relativeBase = 0;
         inputProducer = null;
@@ -26,19 +26,23 @@ public class IntCodeComputer {
         isWaiting = false;
     }
 
-    public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) throws IOException {
+    public IntCodeComputer(String programPath, InputProducer inProd, OutputListener outList) {
         this(programPath);
         inputProducer = inProd;
         outputListener = outList;
     }
 
-    private void parseProg(String programPath) throws IOException {
-        prog = Arrays.stream(
-                new BufferedReader(new FileReader(programPath))
-                        .readLine()
-                        .split(","))
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
+    private void parseProgram(String programPath) {
+        try {
+            program = Arrays.stream(
+                    new BufferedReader(new FileReader(programPath))
+                            .readLine()
+                            .split(","))
+                    .map(Long::parseLong)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void runProgram() {
@@ -50,8 +54,8 @@ public class IntCodeComputer {
     }
 
     private int processOpcode() {
-        int opcode = (int) get(instructionPointer);
-        switch (opcode % 100) {
+        int opcode = (int) get(instructionPointer) % 100;
+        switch (opcode) {
             case 1:
                 add(); return 4;
             case 2:
@@ -60,10 +64,8 @@ public class IntCodeComputer {
                 input(); return isWaiting? 0: 2;
             case 4:
                 output(); return 2;
-            case 5:
-                return jump(true)? 0: 3;
-            case 6:
-                return jump(false)? 0: 3;
+            case 5: case 6:
+                return jump(opcode == 5)? 0: 3;
             case 7:
                 lessThan(); return 4;
             case 8:
@@ -76,11 +78,11 @@ public class IntCodeComputer {
     }
 
     private long param (int paramOffset, boolean isWriteParam) {
-        int mode = (int) (get(instructionPointer) / 10 / Math.pow(10, paramOffset) % 10);
+        int mode = (int) (get(instructionPointer) / Math.pow(10, paramOffset + 1) % 10);
         long param = get(instructionPointer + paramOffset);
         if (mode == 1)
             return param;
-        long  address = mode == 0? param : param + relativeBase;
+        long address = mode == 0? param : param + relativeBase;
         return isWriteParam? address : get((int) address);
     }
 
@@ -137,14 +139,13 @@ public class IntCodeComputer {
     }
 
     public long get(int address) {
-        return address >= prog.size()? 0 : prog.get(address);
+        return address >= program.size()? 0 : program.get(address);
     }
 
     public void set(int address, long value) {
-        while (address >= prog.size()) {
-            prog.add(0L);
-        }
-        prog.set(address, value);
+        while (address >= program.size())
+            program.add(0L);
+        program.set(address, value);
     }
 
     public void waitForInput() {

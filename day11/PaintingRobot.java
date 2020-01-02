@@ -4,7 +4,6 @@ import intcode.InputProducer;
 import intcode.IntCodeComputer;
 import intcode.OutputListener;
 import util.Point;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class PaintingRobot implements OutputListener, InputProducer {
@@ -66,7 +65,7 @@ public class PaintingRobot implements OutputListener, InputProducer {
         }
     }
 
-    private void run() throws IOException {
+    private void run() {
         new IntCodeComputer("inputs/day11.txt", this, this).runProgram();
     }
 
@@ -93,19 +92,19 @@ public class PaintingRobot implements OutputListener, InputProducer {
         return result.toString();
     }
 
-    private int solvePart1() throws IOException {
+    private int solvePart1() {
         part = 1;
         run();
         return paintedPanels.size();
     }
 
-    private String solvePart2() throws IOException {
+    private String solvePart2() {
         part = 2;
         run();
         return this.toString();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Solution of day 11, part 1: " + new PaintingRobot().solvePart1());
         System.out.println("Solution of day 11, part 2:");
         System.out.println(new PaintingRobot().solvePart2());

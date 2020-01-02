@@ -23,7 +23,7 @@ public class OrbitMap {
         else return 0;
     }
 
-    private int solvePart1() throws FileNotFoundException {
+    private int solvePart1() {
         return this.orbits
                 .keySet()
                 .stream()

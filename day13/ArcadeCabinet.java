@@ -4,7 +4,6 @@ import intcode.InputProducer;
 import intcode.IntCodeComputer;
 import intcode.OutputListener;
 import util.Point;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class ArcadeCabinet implements InputProducer, OutputListener {
@@ -42,20 +41,20 @@ public class ArcadeCabinet implements InputProducer, OutputListener {
         outputCounter = ++outputCounter % 3;
     }
 
-    private int startGame() throws IOException {
+    private int startGame() {
         IntCodeComputer game = new IntCodeComputer("inputs/day13.txt", this, this);
         game.runProgram();
         return (int) tiles.values().stream().filter(i -> i == 2).count();
     }
 
-    private int runGame() throws IOException {
+    private int runGame() {
         IntCodeComputer game = new IntCodeComputer("inputs/day13.txt", this, this);
         game.set(0, 2);
         game.runProgram();
         return score;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         ArcadeCabinet game = new ArcadeCabinet();
         System.out.println("Solution of day 13, part 1: " + game.startGame());
         System.out.println("Solution of day 13, part 2: " + game.runGame());

@@ -1,10 +1,9 @@
 package day02;
 
 import intcode.IntCodeComputer;
-import java.io.IOException;
 
 public class Solution {
-    private static long replaceAndRun(int noun, int verb) throws IOException {
+    private static long replaceAndRun(int noun, int verb) {
         IntCodeComputer c = new IntCodeComputer("inputs/day02.txt");
         c.set(1, noun);
         c.set(2, verb);
@@ -12,18 +11,17 @@ public class Solution {
         return c.get(0);
     }
 
-    private static int solvePart2() throws IOException {
-        for (int noun = 0; noun < 100; noun++) {
+    private static int solvePart2() {
+        for (int noun = 0; noun < 100; noun++)
             for (int verb = 0; verb < 100; verb++) {
                 long output = replaceAndRun(noun, verb);
                 if (output == 19690720)
                     return 100 * noun + verb;
             }
-        }
         return -1;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         System.out.println("Solution of day 2, part 1: " + replaceAndRun(12, 2));
         System.out.println("Solution of day 2, part 2: " + solvePart2());
     }
