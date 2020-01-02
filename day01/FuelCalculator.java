@@ -26,6 +26,10 @@ public class FuelCalculator {
         return fuel;
     }
 
+    private static int calcAdditionalFuelRec(int mass) {
+        return (mass = calcFuel(mass)) > 0? mass + calcAdditionalFuelRec(mass) : 0;
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("Solution of day 1, part 1: " + solve(1));
         System.out.println("Solution of day 1, part 2: " + solve(2));
